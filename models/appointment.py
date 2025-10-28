@@ -69,7 +69,7 @@ class HospitalAppointment(models.Model):
         ws = wb.active
         ws.title = 'Appointments'
 
-        headers = ['Reference', 'Patient', 'Data']
+        headers = ['Reference', 'Patient', 'Data', 'Quantity']
         ws.append(headers)
 
         for rec in appointments:
@@ -77,6 +77,7 @@ class HospitalAppointment(models.Model):
                 rec.reference or '',
                 rec.patient_id.name or '',
                 str(rec.date_appointment or ''),
+                str(rec.total_qty or '')
             ])
 
         stream = BytesIO()
