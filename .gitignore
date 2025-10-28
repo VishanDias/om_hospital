@@ -1,0 +1,16 @@
+# dotfiles
+.*
+!.gitignore
+!.github
+!.mailmap
+!.weblate.json
+# compiled python files
+*.py[co]
+__pycache__/
+# setup.py egg_info
+*.egg-info
+# emacs backup files
+*~
+# hg stuff
+*.orig
+status
