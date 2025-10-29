@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <template id="report_hospital_appointment">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Hospital Appointment Report
+                            <!--                                <span t-field="property.name"/>-->
+                        </h2>
+                        <!--                            <div>-->
+                        <!--                                <strong>Expected Price:</strong>-->
+                        <!--                                <span t-field="property.expected_price"/>-->
+                        <!--                            </div>-->
+                        <!-- Multiple Appointments Report -->
+                        <t t-if="len(docs) > 1">
+                            <table class="table table-bordered mt-4">
+                                <thead>
+                                    <tr>
+                                        <th>Reference</th>
+                                        <th>Patient</th>
+                                        <th>Date</th>
+                                        <th>Total Quantity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!--                                    <t t-set="appointments" t-value="property.mapped('reference')"/>-->
+                                    <tr t-foreach="docs" t-as="appointment">
+                                        <td><span t-field="appointment.reference"/></td>
+                                        <td><span t-field="appointment.patient_id.name"/></td>
+                                        <td><span t-field="appointment.date_appointment"/></td>
+                                        <td><span t-field="appointment.total_qty"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
