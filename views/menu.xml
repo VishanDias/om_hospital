@@ -30,6 +30,9 @@
     <menuitem id="menu_get_report" name="Get Excel Report"
               action="action_appointment_report_wizard"
               parent="menu_appointment_report"/>
+     <menuitem id="menu_get_pdf_report" name="Get PDF Report"
+              action="action_appointment_pdf_wizard"
+              parent="menu_appointment_report"/>
 
 
     <menuitem id="menu_configuration" name="Configuration" sequence="100" groups="om_hospital.group_hospital_doctor"

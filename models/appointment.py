@@ -97,3 +97,11 @@ class HospitalAppointment(models.Model):
             'url': f"/web/content/{export_file.id}?download=true",
             'target': 'new',
         }
+
+    def action_report_hospital_appointment_single(self):
+        """Print single appointment report"""
+        return self.env.ref('om_hospital.action_report_hospital_appointment_single').report_action(self)
+
+    def action_print_multiple_appointments(self):
+        """Print multiple appointments report"""
+        return self.env.ref('om_hospital.action_report_hospital_appointment').report_action(self)

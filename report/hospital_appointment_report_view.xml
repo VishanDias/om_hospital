@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <data>
-        <record id="action_report_hospital_appointment" model="ir.actions.report">
-            <field name="name">Hotel Appointment Report</field>
-            <field name="model">hospital.appointment</field>
-            <field name="report_type">qweb-pdf</field>
-            <field name="report_name">om_hospital.report_hospital_appointment</field>
-            <field name="report_file">om_hospital.report_hospital_appointment</field>
-            <field name="binding_model_id" ref="model_hospital_appointment"/>
-        </record>
+<!--        <record id="action_report_hospital_appointment" model="ir.actions.report">-->
+<!--            <field name="name">Hotel Appointments Report</field>-->
+<!--            <field name="model">hospital.appointment</field>-->
+<!--            <field name="report_type">qweb-pdf</field>-->
+<!--            <field name="report_name">om_hospital.report_hospital_appointment</field>-->
+<!--            <field name="report_file">om_hospital.report_hospital_appointment</field>-->
+<!--            <field name="binding_model_id" ref="model_hospital_appointment"/>-->
+<!--        </record>-->
 
 <!--        <record id="paperformat_euro_lowmargin" model="report.paperformat">-->
 <!--            <field name="name">European A4 low margin</field>-->
@@ -25,5 +25,32 @@
 <!--            <field name="header_spacing">5</field>-->
 <!--            <field name="dpi">80</field>-->
 <!--        </record>-->
+
+        <!-- Report for multiple appointments (from list view) -->
+        <record id="action_report_hospital_appointment" model="ir.actions.report">
+            <field name="name">Hospital Appointments Report</field>
+            <field name="model">hospital.appointment</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">om_hospital.report_hospital_appointment</field>
+            <field name="report_file">om_hospital.report_hospital_appointment</field>
+            <field name="print_report_name">'Hospital Appointments Report - %s' % (object.create_date or datetime.now().strftime('%Y-%m-%d'))</field>
+            <field name="binding_model_id" ref="model_hospital_appointment"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <!-- Report for single appointment (from form view) -->
+        <record id="action_report_hospital_appointment_single" model="ir.actions.report">
+            <field name="name">Hospital Appointment</field>
+            <field name="model">hospital.appointment</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">om_hospital.report_hospital_appointment_single</field>
+            <field name="report_file">om_hospital.report_hospital_appointment_single</field>
+            <field name="print_report_name">'Appointment - %s' % (object.reference or '')</field>
+            <field name="binding_model_id" ref="model_hospital_appointment"/>
+            <field name="binding_type">report</field>
+<!--            <field name="paperformat_id" ref="report.paperformat_euro"/>-->
+        </record>
+
+
     </data>
 </odoo>

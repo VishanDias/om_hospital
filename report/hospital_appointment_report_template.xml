@@ -1,42 +1,168 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <data>
+        <!-- Template for Multiple Appointments Report -->
         <template id="report_hospital_appointment">
             <t t-call="web.html_container">
                 <t t-call="web.external_layout">
-                    <div class="page">
-                        <h2>Hospital Appointment Report
-                            <!--                                <span t-field="property.name"/>-->
-                        </h2>
-                        <!--                            <div>-->
-                        <!--                                <strong>Expected Price:</strong>-->
-                        <!--                                <span t-field="property.expected_price"/>-->
-                        <!--                            </div>-->
-                        <!-- Multiple Appointments Report -->
-                        <t t-if="len(docs) > 1">
-                            <table class="table table-bordered mt-4">
-                                <thead>
-                                    <tr>
-                                        <th>Reference</th>
-                                        <th>Patient</th>
-                                        <th>Date</th>
-                                        <th>Total Quantity</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!--                                    <t t-set="appointments" t-value="property.mapped('reference')"/>-->
-                                    <tr t-foreach="docs" t-as="appointment">
-                                        <td><span t-field="appointment.reference"/></td>
-                                        <td><span t-field="appointment.patient_id.name"/></td>
-                                        <td><span t-field="appointment.date_appointment"/></td>
-                                        <td><span t-field="appointment.total_qty"/></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </t>
-                    </div>
+                    <main>
+                        <div class="page">
+                            <div class="header text-center">
+                                <h2>Hospital Appointments Report</h2>
+                                <p class="text-muted">
+                                    Generated on <span t-esc="datetime.datetime.now().strftime('%Y-%m-%d %H:%M')"/>
+                                </p>
+                            </div>
+
+                            <!-- Multiple Appointments Report -->
+                            <t t-if="len(docs) > 1">
+                                <div class="table-responsive mt-4">
+                                    <table class="table table-bordered table-striped">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th>Reference</th>
+                                                <th>Patient</th>
+                                                <th>Date</th>
+                                                <th>Total Quantity</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr t-foreach="docs" t-as="appointment">
+                                                <td><span t-field="appointment.reference"/></td>
+                                                <td>
+                                                    <span t-field="appointment.patient_id.name"/>
+                                                </td>
+                                                <td>
+                                                    <span t-field="appointment.date_appointment"/>
+                                                </td>
+                                                <td class="text-end">
+                                                    <span t-field="appointment.total_qty"/>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot t-if="len(docs) > 0">
+                                            <tr class="table-info">
+                                                <td colspan="5" class="text-end"><strong>Total Appointments:</strong></td>
+                                                <td class="text-end"><strong t-esc="len(docs)"/></td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </t>
+
+                            <!-- Single Appointment fallback -->
+                            <t t-if="len(docs) == 1">
+                                <div t-call="om_hospital.appointment_single_details"/>
+                            </t>
+                        </div>
+                    </main>
                 </t>
             </t>
+        </template>
+
+        <!-- Template for Single Appointment Report -->
+        <template id="report_hospital_appointment_single">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <main>
+                        <div class="page">
+                            <div class="header text-center">
+                                <h2>Hospital Appointment Details</h2>
+                                <p class="text-muted">Appointment Reference: <strong t-field="docs[0].reference"/></p>
+                            </div>
+
+                            <div t-call="om_hospital.appointment_single_details"/>
+                        </div>
+                    </main>
+                </t>
+            </t>
+        </template>
+
+        <!-- Reusable Single Appointment Details Template -->
+        <template id="appointment_single_details">
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Appointment Information</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td><strong>Reference:</strong></td>
+                                    <td><span t-field="docs[0].reference"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Date:</strong></td>
+                                    <td><span t-field="docs[0].date_appointment"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Total Quantity:</strong></td>
+                                    <td><span t-field="docs[0].total_qty"/></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Patient Information</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td><strong>Patient:</strong></td>
+                                    <td><span t-field="docs[0].patient_id.name"/></td>
+                                </tr>
+                                <tr t-if="docs[0].patient_id.gender">
+                                    <td><strong>Gender:</strong></td>
+                                    <td><span t-field="docs[0].patient_id.gender"/></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Doctor Information -->
+<!--            <div class="row mt-3" t-if="docs[0].doctor_id">-->
+<!--                <div class="col-12">-->
+<!--                    <div class="card">-->
+<!--                        <div class="card-header">-->
+<!--                            <h5 class="card-title mb-0">Doctor Information</h5>-->
+<!--                        </div>-->
+<!--                        <div class="card-body">-->
+<!--                            <div class="row">-->
+<!--                                <div class="col-md-4">-->
+<!--                                    <strong>Doctor:</strong> <span t-field="docs[0].doctor_id.name"/>-->
+<!--                                </div>-->
+<!--                                <div class="col-md-4" t-if="docs[0].doctor_id.specialization">-->
+<!--                                    <strong>Specialization:</strong> <span t-field="docs[0].doctor_id.specialization"/>-->
+<!--                                </div>-->
+<!--                                <div class="col-md-4" t-if="docs[0].doctor_id.phone">-->
+<!--                                    <strong>Phone:</strong> <span t-field="docs[0].doctor_id.phone"/>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+            <!-- Notes -->
+<!--            <div class="row mt-3" t-if="docs[0].notes">-->
+<!--                <div class="col-12">-->
+<!--                    <div class="card">-->
+<!--                        <div class="card-header">-->
+<!--                            <h5 class="card-title mb-0">Notes</h5>-->
+<!--                        </div>-->
+<!--                        <div class="card-body">-->
+<!--                            <p t-field="docs[0].notes"/>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
         </template>
     </data>
 </odoo>
